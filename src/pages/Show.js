@@ -13,7 +13,7 @@ function Show(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        props.updatePeople(editForm)
+        props.updatePeople(editForm, person._id)
         props.history.push('/')
     }
 
