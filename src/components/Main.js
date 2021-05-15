@@ -6,7 +6,7 @@ import Show from '../pages/Show'
 function Main(props) {
     const [people, setPeople] =useState(null)
 
-    const URL = "https://people-backend-gd.herokuapp.com/people"
+    const URL = "https://people-backend-gd.herokuapp.com/people/"
 
     const getPeople = async () => {
         const response = await fetch(URL)
@@ -27,6 +27,24 @@ function Main(props) {
         getPeople()
     }
 
+    const updatePeople = async (person, id) => {
+        await fetch(URL + id, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(person)
+        })
+        getPeople()
+    }
+
+    const deletePeople = async (id) => {
+        await fetch(URL + id, {
+            method: "delete"
+        })
+        getPeople()
+    }
+
     useEffect(() => getPeople(), [])
 
     return (
@@ -36,8 +54,14 @@ function Main(props) {
                     <Index people={people} createPeople={createPeople} />
                 </Route>
                 <Route
-                    path='./people/:id'
-                    render={(routerprops) => (<Show {...routerprops} />
+                    path='/people/:id'
+                    render={routerprops => (
+                        <Show 
+                            people={people}
+                            updatePeople={updatePeople}
+                            deletePeople={deletePeople}
+                            {...routerprops}    
+                        />
                     )}
                 />
             </Switch>
